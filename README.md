@@ -106,7 +106,7 @@ Project dijalankan menggunakan dua container Docker:
               │  siruang-app    │
               │                 │
               │ PHP 8.3         │
-              │ Apache           │
+              │ Apache          │
               └────────┬────────┘
                        │
                        │ Docker Network
