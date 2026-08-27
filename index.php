@@ -276,7 +276,7 @@
     font-size:12.5px;color:#9CA1CC;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 
   /* ---------- RESPONSIVE ---------- */
-  @media (max-width:880px){
+/*  @media (max-width:880px){
     nav.links{display:none;}
     .menu-toggle{display:block;}
     .hero-grid{grid-template-columns:1fr;}
@@ -291,7 +291,183 @@
     .footer-grid{grid-template-columns:1fr;gap:26px;}
     .steps-bar{flex-wrap:wrap;}
     .step-tab{min-width:50%;}
+  } */
+    /* ---------- RESPONSIVE IMPROVEMENTS ---------- */
+@media (max-width: 880px) {
+  .wrap {
+    padding: 0 16px; /* Kurangi padding samping agar konten lebih luas */
   }
+
+  /* 1. Header & Navigasi */
+  nav.links {
+    display: none; /* Disembunyikan untuk tampilan mobile */
+  }
+  .menu-toggle {
+    display: block;
+  }
+  .nav-cta {
+    padding: 8px 14px;
+    font-size: 12.5px;
+  }
+
+  /* 2. Hero Section */
+  .hero {
+    padding: 32px 0 24px;
+  }
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    text-align: left;
+  }
+  .hero-art {
+    order: -1; /* Pindahkan gambar ilustrasi ke atas teks di mobile */
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+  .hero p.lead {
+    font-size: 14.5px;
+  }
+  
+  /* Tombol Hero penuh selebar layar di HP */
+  .hero-cta {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .btn-primary, .btn-ghost {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Statistik (2 Gedung, 9 Ruangan, dll) Rapi 2 Kolom */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+    background: var(--surface);
+    padding: 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+  }
+  .hero-stats div b {
+    font-size: 20px;
+  }
+
+  /* 3. Tab Gedung & Denah Ruangan (Explorer) */
+  .building-tabs {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .building-tab {
+    padding: 12px 16px;
+  }
+  .explorer {
+    grid-template-columns: 1fr;
+    padding: 16px;
+    gap: 18px;
+  }
+
+  /* Panel Lift (Pilihan Lantai) geser menyamping di HP */
+  .lift-panel {
+    flex-direction: row;
+    overflow-x: auto;
+    justify-content: space-between;
+    padding: 8px;
+  }
+  .lift-label {
+    display: none; /* Sembunyikan label di HP agar hemat ruang */
+  }
+  .lift-btn {
+    flex: 1;
+    padding: 8px 12px;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  /* Card Ruangan */
+  .room-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px;
+  }
+  .room-card .rc-cap {
+    align-self: flex-start;
+  }
+
+  /* 4. Wizard / Formulir Peminjaman */
+  .wizard {
+    border-radius: 12px;
+  }
+  .steps-bar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Step 1-2 di atas, 3-4 di bawah */
+  }
+  .step-tab {
+    font-size: 11.5px;
+    padding: 10px 6px;
+  }
+  .step-panel {
+    padding: 18px 14px;
+  }
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .wizard-actions {
+    padding: 14px 16px;
+  }
+  .review-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* 5. Tabel Jadwal Peminjaman (Responsif dengan Scroll Horizontal) */
+  .schedule-filters {
+    flex-direction: column;
+  }
+  .schedule-filters select, 
+  .schedule-filters input, 
+  .schedule-filters button {
+    width: 100%;
+  }
+  
+  /* Pembungkus tabel agar bisa di-scroll ke samping jika lebar */
+  #jadwal .wrap {
+    overflow-x: auto;
+  }
+  table.schedule {
+    min-width: 550px; /* Menjaga isi tabel tetap rapi & terbaca */
+  }
+
+  /* 6. Alur & Ketentuan (Flow & Rules) */
+  .flow {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .rules-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* 7. Footer */
+  footer {
+    padding: 36px 0 20px;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
+}
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
     *{transition:none !important;}
