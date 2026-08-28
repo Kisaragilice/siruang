@@ -172,6 +172,15 @@ git pull
 
 ---
 
+## RENAME FILE dan MASUKAN API BESERTA CHAT ID
+
+```bash
+cd siruang
+mv config/database copy.php config/database.php
+mv config/telegram copy.php config/telegram.php
+nano telegram.php
+```
+
 ## 2. Konfigurasi Database
 
 File:
