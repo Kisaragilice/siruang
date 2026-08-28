@@ -1,6 +1,7 @@
 <?php
 
 require "../config/database.php";
+require "../config/telegram.php";
 
 header("Content-Type: application/json");
 
@@ -14,7 +15,21 @@ if (!$data) {
     exit;
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| 1. Buat kode peminjaman
+|--------------------------------------------------------------------------
+*/
+
 $kode = "UTI-" . strtoupper(substr(md5(uniqid()), 0, 6));
+
+
+/*
+|--------------------------------------------------------------------------
+| 2. Simpan peminjaman ke database
+|--------------------------------------------------------------------------
+*/
 
 $stmt = $conn->prepare("
     INSERT INTO peminjaman (
@@ -46,18 +61,95 @@ $stmt->bind_param(
     $data["jamSelesai"]
 );
 
-if ($stmt->execute()) {
 
-    echo json_encode([
-        "success" => true,
-        "message" => "Peminjaman berhasil disimpan",
-        "kode" => $kode
-    ]);
+/*
+|--------------------------------------------------------------------------
+| 3. Jalankan INSERT
+|--------------------------------------------------------------------------
+*/
 
-} else {
+if (!$stmt->execute()) {
 
     echo json_encode([
         "success" => false,
         "message" => $stmt->error
     ]);
+
+    exit;
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| 4. Ambil informasi ruangan
+|--------------------------------------------------------------------------
+*/
+
+$roomStmt = $conn->prepare("
+    SELECT nama, gedung, lantai
+    FROM ruangan
+    WHERE id = ?
+");
+
+$roomStmt->bind_param(
+    "s",
+    $data["roomId"]
+);
+
+$roomStmt->execute();
+
+$room = $roomStmt->get_result()->fetch_assoc();
+
+
+/*
+|--------------------------------------------------------------------------
+| 5. Buat pesan Telegram
+|--------------------------------------------------------------------------
+*/
+
+$message = "
+<b>PEMINJAMAN RUANGAN BARU</b>
+
+<b>Kode:</b> <code>{$kode}</code>
+
+<b>Ruangan</b>
+{$room['nama']}
+Gedung {$room['gedung']} - Lantai {$room['lantai']}
+
+<b>Peminjam</b>
+Nama: {$data['nama']}
+Identitas: {$data['identitas']}
+Kontak: {$data['kontak']}
+Unit: {$data['unit']}
+
+<b>Jadwal</b>
+Tanggal: {$data['tanggal']}
+Jam: {$data['jamMulai']} - {$data['jamSelesai']}
+
+<b>Keperluan</b>
+{$data['keperluan']}
+
+<b>Status:</b> Menunggu
+";
+
+
+/*
+|--------------------------------------------------------------------------
+| 6. Kirim pesan Telegram
+|--------------------------------------------------------------------------
+*/
+
+sendTelegramMessage($message);
+
+
+/*
+|--------------------------------------------------------------------------
+| 7. Beri tahu JavaScript bahwa booking berhasil
+|--------------------------------------------------------------------------
+*/
+
+echo json_encode([
+    "success" => true,
+    "message" => "Peminjaman berhasil disimpan",
+    "kode" => $kode
+]);
