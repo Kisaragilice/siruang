@@ -1,2 +1,3 @@
 config/database.php
 config/telegram.php
+.vscode/
