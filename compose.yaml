@@ -15,6 +15,7 @@ services:
     image: mariadb:12.3
     container_name: siruang-db
     restart: unless-stopped
+    mem_limit: 512m
     environment:
       MYSQL_DATABASE: siruang
       MYSQL_USER: siruang
